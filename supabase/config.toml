@@ -1,0 +1,18 @@
+project_id = "hoklxumvzrbwxqtrfzwn"
+
+[api]
+enabled = true
+port = 54321
+
+[db]
+port = 54322
+
+[studio]
+enabled = true
+port = 54323
+
+[functions.send-appointment-confirmation]
+verify_jwt = false
+
+[functions.send-admin-notification]  
+verify_jwt = false
