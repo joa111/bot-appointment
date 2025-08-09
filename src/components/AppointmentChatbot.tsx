@@ -429,7 +429,7 @@ export function AppointmentChatbot() {
             AppointmentBot Pro
           </h1>
           <div className="flex gap-1 sm:gap-2">
-            <Link to="/admin">
+            <Link to="/admin-dashboard-2025">
               <Button variant="outline" size="sm" className="hidden sm:flex">
                 <Shield className="h-4 w-4 mr-2" />
                 Admin
