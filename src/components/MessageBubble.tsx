@@ -6,34 +6,44 @@ interface MessageBubbleProps {
 
 export function MessageBubble({ message }: MessageBubbleProps) {
   const isUser = message.sender === "user";
-  
+
   return (
     <div
-      className={`flex ${isUser ? "justify-end" : "justify-start"} animate-fade-in px-2 sm:px-0`}
+      className={`message-group flex ${isUser ? "justify-end" : "justify-start"} px-3`}
     >
+      {/* Bot avatar dot */}
+      {!isUser && (
+        <div className="flex-shrink-0 mt-auto mb-1 mr-2">
+          <div className="w-7 h-7 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center">
+            <span className="text-primary text-[10px] font-semibold font-ui">AB</span>
+          </div>
+        </div>
+      )}
+
       <div
         className={`
-          max-w-[90%] sm:max-w-[85%] lg:max-w-[70%] rounded-2xl px-4 py-3 shadow-lg backdrop-blur-sm
-          ${
-            isUser
-              ? "bg-gradient-to-br from-chat-user-bg to-primary/90 text-chat-user-fg animate-slide-in-right border border-primary/20"
-              : "bg-gradient-to-br from-chat-bot-bg to-muted/50 text-chat-bot-fg animate-slide-in-left border border-border/30"
-          }
-          ${isUser ? "rounded-br-md" : "rounded-bl-md"}
-          transition-all duration-200 hover:shadow-xl
+          flex flex-col max-w-[78%]
+          ${isUser ? "items-end animate-message-in-right" : "items-start animate-message-in"}
         `}
+        style={{ animationFillMode: "both" }}
       >
-        <p className="text-sm sm:text-base leading-relaxed whitespace-pre-line">
+        <div
+          className={`
+            px-4 py-2.5 text-sm leading-relaxed whitespace-pre-line
+            ${isUser
+              ? "bg-chat-user-bg text-chat-user-fg rounded-[14px] rounded-br-[4px]"
+              : "bg-chat-bot-bg text-chat-bot-fg rounded-[14px] rounded-bl-[4px]"
+            }
+          `}
+        >
           {message.text}
-        </p>
-        <div className="flex justify-end mt-2">
-          <span className={`text-xs opacity-70 ${isUser ? "text-chat-user-fg" : "text-chat-bot-fg"}`}>
-            {message.timestamp.toLocaleTimeString([], { 
-              hour: '2-digit', 
-              minute: '2-digit' 
-            })}
-          </span>
         </div>
+        <span className="msg-timestamp text-[11px] text-muted-foreground mt-1 px-1 font-ui">
+          {message.timestamp.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
+        </span>
       </div>
     </div>
   );

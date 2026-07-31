@@ -12,21 +12,29 @@ export default {
 	theme: {
 		container: {
 			center: true,
-			padding: '2rem',
+			padding: '1rem',
 			screens: {
 				'2xl': '1400px'
 			}
 		},
 		extend: {
+			fontFamily: {
+				sans: ['DM Sans', 'system-ui', '-apple-system', 'sans-serif'],
+				ui: ['Inter', 'system-ui', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
+				'foreground-sub': 'hsl(var(--foreground-sub))',
+				surface: 'hsl(var(--surface))',
+				'surface-elevated': 'hsl(var(--surface-elevated))',
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					foreground: 'hsl(var(--primary-foreground))',
+					muted: 'hsl(var(--primary-muted))',
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
@@ -71,77 +79,69 @@ export default {
 						bg: 'hsl(var(--chat-bot-bg))',
 						fg: 'hsl(var(--chat-bot-fg))'
 					},
-					typing: 'hsl(var(--chat-typing-bg))'
+					dot: 'hsl(var(--chat-typing-dot))'
 				}
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
+				sm: 'calc(var(--radius) - 6px)',
+				xl: 'calc(var(--radius) + 4px)',
+				'2xl': 'calc(var(--radius) + 8px)',
 			},
 			keyframes: {
 				'accordion-down': {
-					from: {
-						height: '0'
-					},
-					to: {
-						height: 'var(--radix-accordion-content-height)'
-					}
+					from: { height: '0' },
+					to: { height: 'var(--radix-accordion-content-height)' }
 				},
 				'accordion-up': {
-					from: {
-						height: 'var(--radix-accordion-content-height)'
-					},
-					to: {
-						height: '0'
-					}
+					from: { height: 'var(--radix-accordion-content-height)' },
+					to: { height: '0' }
+				},
+				'message-in': {
+					'0%': { opacity: '0', transform: 'translateY(8px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' }
+				},
+				'message-in-right': {
+					'0%': { opacity: '0', transform: 'translateX(12px) translateY(4px)' },
+					'100%': { opacity: '1', transform: 'translateX(0) translateY(0)' }
+				},
+				'fade-up': {
+					'0%': { opacity: '0', transform: 'translateY(16px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' }
 				},
 				'fade-in': {
-					'0%': {
-						opacity: '0',
-						transform: 'translateY(10px)'
-					},
-					'100%': {
-						opacity: '1',
-						transform: 'translateY(0)'
-					}
+					'0%': { opacity: '0' },
+					'100%': { opacity: '1' }
 				},
 				'slide-in-left': {
-					'0%': {
-						opacity: '0',
-						transform: 'translateX(-20px)'
-					},
-					'100%': {
-						opacity: '1',
-						transform: 'translateX(0)'
-					}
+					'0%': { opacity: '0', transform: 'translateX(-20px)' },
+					'100%': { opacity: '1', transform: 'translateX(0)' }
 				},
 				'slide-in-right': {
-					'0%': {
-						opacity: '0',
-						transform: 'translateX(20px)'
-					},
-					'100%': {
-						opacity: '1',
-						transform: 'translateX(0)'
-					}
+					'0%': { opacity: '0', transform: 'translateX(20px)' },
+					'100%': { opacity: '1', transform: 'translateX(0)' }
 				},
-				'typing-dots': {
-					'0%, 60%, 100%': {
-						transform: 'translateY(0)'
-					},
-					'30%': {
-						transform: 'translateY(-10px)'
-					}
-				}
+				'typing-dot': {
+					'0%, 100%': { transform: 'translateY(0)', opacity: '0.4' },
+					'50%': { transform: 'translateY(-5px)', opacity: '1' }
+				},
+				'scale-in': {
+					'0%': { opacity: '0', transform: 'scale(0.95)' },
+					'100%': { opacity: '1', transform: 'scale(1)' }
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
+				'message-in': 'message-in 0.22s ease-out forwards',
+				'message-in-right': 'message-in-right 0.22s ease-out forwards',
+				'fade-up': 'fade-up 0.4s ease-out forwards',
 				'fade-in': 'fade-in 0.3s ease-out',
-				'slide-in-left': 'slide-in-left 0.3s ease-out',
-				'slide-in-right': 'slide-in-right 0.3s ease-out',
-				'typing-dots': 'typing-dots 1.4s infinite ease-in-out'
+				'slide-in-left': 'slide-in-left 0.28s ease-out',
+				'slide-in-right': 'slide-in-right 0.28s ease-out',
+				'typing-dot': 'typing-dot 1.2s ease-in-out infinite',
+				'scale-in': 'scale-in 0.25s ease-out',
 			}
 		}
 	},

@@ -1,116 +1,207 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Inter:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
 @layer base {
   :root {
-    --background: 60 100% 97%;
-    --foreground: 0 0% 20%;
+    /* Core backgrounds — soft warm off-white */
+    --background: 240 20% 97%;        /* #F5F5FB — page bg */
+    --surface: 0 0% 100%;             /* #FFFFFF — card/chat bg */
+    --surface-elevated: 240 18% 95%;  /* #F2F2F9 — input area */
 
-    --card: 60 100% 97%;
-    --card-foreground: 0 0% 20%;
+    /* Foreground */
+    --foreground: 240 20% 14%;        /* #1C1C2E — main text */
+    --foreground-sub: 240 10% 50%;    /* #757590 — secondary text */
 
-    --popover: 60 100% 97%;
-    --popover-foreground: 0 0% 20%;
+    /* Primary — soft indigo (slightly deeper for light mode legibility) */
+    --primary: 245 72% 58%;           /* #5A52E0 */
+    --primary-foreground: 0 0% 100%;
+    --primary-muted: 245 72% 94%;     /* #ECEAFC — tinted bg */
 
-    --primary: 150 31% 74%;
-    --primary-foreground: 0 0% 20%;
+    /* Cards / surfaces */
+    --card: 0 0% 100%;
+    --card-foreground: 240 20% 14%;
 
-    --secondary: 60 100% 97%;
-    --secondary-foreground: 0 0% 20%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 20% 14%;
 
-    --muted: 150 15% 85%;
-    --muted-foreground: 0 0% 40%;
+    /* Secondary */
+    --secondary: 240 18% 95%;
+    --secondary-foreground: 240 20% 14%;
 
-    --accent: 0 0% 20%;
-    --accent-foreground: 60 100% 97%;
+    /* Muted */
+    --muted: 240 16% 93%;
+    --muted-foreground: 240 10% 50%;
 
-    --destructive: 120 61% 34%;
-    --destructive-foreground: 60 100% 97%;
+    /* Accent */
+    --accent: 245 72% 94%;
+    --accent-foreground: 245 72% 40%;
 
-    --border: 150 20% 88%;
-    --input: 150 20% 88%;
-    --ring: 150 31% 74%;
+    /* Destructive */
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
 
-    /* Chat-specific colors */
-    --chat-user-bg: 150 31% 74%;
-    --chat-user-fg: 0 0% 20%;
-    --chat-bot-bg: 60 100% 97%;
-    --chat-bot-fg: 0 0% 20%;
-    --chat-typing-bg: 150 31% 60%;
+    /* Borders and inputs */
+    --border: 240 14% 89%;            /* #E2E2EE — soft lavender border */
+    --input: 240 18% 95%;
+    --ring: 245 72% 58%;
 
-    /* Enhanced gradients and effects */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
-    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--muted) / 0.3));
+    /* Chat-specific */
+    --chat-user-bg: 245 72% 58%;      /* #5A52E0 — user bubble (indigo) */
+    --chat-user-fg: 0 0% 100%;
+    --chat-bot-bg: 240 18% 95%;       /* #F2F2F9 — bot bubble (soft gray) */
+    --chat-bot-fg: 240 20% 14%;
+    --chat-typing-dot: 240 10% 65%;
 
-    --radius: 0.5rem;
+    /* Status */
+    --online-dot: 152 60% 40%;        /* muted green */
 
-    --sidebar-background: 0 0% 98%;
+    --radius: 0.875rem;               /* 14px */
 
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Sidebar */
+    --sidebar-background: 240 20% 98%;
+    --sidebar-foreground: 240 20% 14%;
+    --sidebar-primary: 245 72% 58%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 245 72% 94%;
+    --sidebar-accent-foreground: 245 72% 40%;
+    --sidebar-border: 240 14% 89%;
+    --sidebar-ring: 245 72% 58%;
   }
 
+  /* Dark mode kept available but not default */
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --background: 228 18% 7%;
+    --surface: 228 18% 12%;
+    --surface-elevated: 228 18% 16%;
+    --foreground: 232 100% 97%;
+    --foreground-sub: 228 20% 62%;
+    --card: 228 18% 12%;
+    --card-foreground: 232 100% 97%;
+    --popover: 228 18% 12%;
+    --popover-foreground: 232 100% 97%;
+    --primary: 245 95% 70%;
+    --primary-foreground: 0 0% 100%;
+    --primary-muted: 245 50% 35%;
+    --secondary: 228 18% 18%;
+    --secondary-foreground: 232 100% 97%;
+    --muted: 228 18% 16%;
+    --muted-foreground: 228 20% 62%;
+    --accent: 228 18% 20%;
+    --accent-foreground: 232 100% 97%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 228 18% 20%;
+    --input: 228 18% 16%;
+    --ring: 245 95% 70%;
+    --chat-user-bg: 245 57% 54%;
+    --chat-user-fg: 0 0% 100%;
+    --chat-bot-bg: 228 18% 16%;
+    --chat-bot-fg: 232 100% 97%;
+    --chat-typing-dot: 228 20% 55%;
+    --online-dot: 142 76% 45%;
+    --sidebar-background: 228 18% 9%;
+    --sidebar-foreground: 232 100% 97%;
+    --sidebar-primary: 245 95% 70%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 228 18% 16%;
+    --sidebar-accent-foreground: 232 100% 97%;
+    --sidebar-border: 228 18% 16%;
+    --sidebar-ring: 245 95% 70%;
   }
 }
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border box-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+}
+
+/* ── Custom Scrollbar ── */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground));
+}
+
+/* ── Chat scroll area ── */
+.chat-scroll-area {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--border)) transparent;
+}
+
+/* ── Dot-grid background texture ── */
+.dot-grid {
+  background-image: radial-gradient(
+    circle,
+    hsl(240 14% 80% / 0.7) 1px,
+    transparent 1px
+  );
+  background-size: 24px 24px;
+}
+
+/* ── Glass card ── */
+.glass {
+  background: hsl(var(--surface) / 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid hsl(var(--border) / 0.5);
+}
+
+/* ── Message bubble timestamp reveal on hover ── */
+.message-group:hover .msg-timestamp {
+  opacity: 1;
+}
+.msg-timestamp {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* ── Input focus ring override (cleaner) ── */
+.chat-input:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px hsl(var(--primary) / 0.4);
+}
+
+/* ── Online status pulse ── */
+@keyframes pulse-online {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.online-pulse {
+  animation: pulse-online 2.5s ease-in-out infinite;
+}
+
+/* ── Animation class aliases (match component usage) ── */
+.animate-message-in-right {
+  animation: message-in-right 0.22s ease-out forwards;
+}
+
+/* ── Safe area bottom padding for mobile ── */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }

@@ -42,6 +42,8 @@ export type Database = {
           created_at: string | null
           full_name: string
           id: string
+          notes: string | null
+          phone_number: string | null
           queue_number: number
           status: string | null
           time_slot: string | null
@@ -53,6 +55,8 @@ export type Database = {
           created_at?: string | null
           full_name: string
           id?: string
+          notes?: string | null
+          phone_number?: string | null
           queue_number: number
           status?: string | null
           time_slot?: string | null
@@ -64,6 +68,8 @@ export type Database = {
           created_at?: string | null
           full_name?: string
           id?: string
+          notes?: string | null
+          phone_number?: string | null
           queue_number?: number
           status?: string | null
           time_slot?: string | null
@@ -89,6 +95,45 @@ export type Database = {
           date?: string | null
           id?: string
           morning_count?: number | null
+        }
+        Relationships: []
+      }
+      system_settings: {
+        Row: {
+          id: string
+          singleton_guard: number | null
+          daily_morning_limit: number
+          daily_afternoon_limit: number
+          booking_cutoff_hour: number
+          enable_notifications: boolean
+          welcome_message: string
+          confirmation_message: string
+          created_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          singleton_guard?: number | null
+          daily_morning_limit?: number
+          daily_afternoon_limit?: number
+          booking_cutoff_hour?: number
+          enable_notifications?: boolean
+          welcome_message?: string
+          confirmation_message?: string
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          singleton_guard?: number | null
+          daily_morning_limit?: number
+          daily_afternoon_limit?: number
+          booking_cutoff_hour?: number
+          enable_notifications?: boolean
+          welcome_message?: string
+          confirmation_message?: string
+          created_at?: string | null
+          updated_at?: string | null
         }
         Relationships: []
       }

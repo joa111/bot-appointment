@@ -28,8 +28,6 @@ export const useRealtimeQueueCounters = () => {
           table: 'queue_counters'
         },
         (payload) => {
-          console.log('Queue counter changed:', payload);
-          
           if (payload.eventType === 'INSERT') {
             setQueueCounters(current => [payload.new as QueueCounter, ...current]);
           } else if (payload.eventType === 'UPDATE') {

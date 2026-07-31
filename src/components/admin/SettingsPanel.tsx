@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/dialog";
 import { Settings, Users, Clock, MessageSquare, Plus, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useSystemSettings } from "@/hooks/useSystemSettings";
 
 interface SystemSettings {
   dailyMorningLimit: number;
@@ -56,10 +57,30 @@ export function SettingsPanel() {
   const [saving, setSaving] = useState(false);
   const { toast } = useToast();
 
+  const { settings: dbSettings, loading: dbLoading, updateSettings } = useSystemSettings();
+
   useEffect(() => {
     fetchAdminUsers();
-    setLoading(false);
   }, []);
+
+  useEffect(() => {
+    if (!dbLoading) {
+      setLoading(false);
+    }
+  }, [dbLoading]);
+
+  useEffect(() => {
+    if (dbSettings) {
+      setSettings({
+        dailyMorningLimit: dbSettings.daily_morning_limit,
+        dailyAfternoonLimit: dbSettings.daily_afternoon_limit,
+        bookingCutoffHour: dbSettings.booking_cutoff_hour,
+        enableNotifications: dbSettings.enable_notifications,
+        welcomeMessage: dbSettings.welcome_message,
+        confirmationMessage: dbSettings.confirmation_message,
+      });
+    }
+  }, [dbSettings]);
 
   const fetchAdminUsers = async () => {
     try {
@@ -83,20 +104,27 @@ export function SettingsPanel() {
   const saveSettings = async () => {
     setSaving(true);
     try {
-      // In a real application, you would save these settings to a database
-      // For now, we'll just store them in localStorage
-      localStorage.setItem('appointmentBotSettings', JSON.stringify(settings));
+      const { error } = await updateSettings({
+        daily_morning_limit: settings.dailyMorningLimit,
+        daily_afternoon_limit: settings.dailyAfternoonLimit,
+        booking_cutoff_hour: settings.bookingCutoffHour,
+        enable_notifications: settings.enableNotifications,
+        welcome_message: settings.welcomeMessage,
+        confirmation_message: settings.confirmationMessage,
+      });
+
+      if (error) throw error;
       
       toast({
         title: "Settings saved",
-        description: "Your settings have been updated successfully.",
+        description: "Your settings have been updated successfully in the database.",
       });
     } catch (error) {
       console.error('Error saving settings:', error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to save settings.",
+        description: "Failed to save settings to the database.",
       });
     } finally {
       setSaving(false);

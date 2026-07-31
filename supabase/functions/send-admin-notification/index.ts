@@ -1,13 +1,37 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
-import { Resend } from "npm:resend@2.0.0";
+
+// ─────────────────────────────────────────────────────────────────────────────
+// TODO: Telegram Bot Integration
+//
+// When you're ready to wire up Telegram:
+//
+// 1. Create a bot via @BotFather on Telegram and copy the bot token.
+// 2. Get your admin chat ID (send a message to the bot, then call
+//    https://api.telegram.org/bot<TOKEN>/getUpdates to find your chat_id).
+// 3. Set both as Supabase secrets:
+//      supabase secrets set TELEGRAM_BOT_TOKEN=<token>
+//      supabase secrets set TELEGRAM_CHAT_ID=<chat_id>
+// 4. Uncomment and fill in the sendTelegramMessage helper below, then
+//    call it inside the handler.
+//
+// Example helper (uncomment when ready):
+//
+// async function sendTelegramMessage(text: string): Promise<void> {
+//   const token = Deno.env.get("TELEGRAM_BOT_TOKEN") ?? "";
+//   const chatId = Deno.env.get("TELEGRAM_CHAT_ID") ?? "";
+//   await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify({ chat_id: chatId, text, parse_mode: "HTML" }),
+//   });
+// }
+// ─────────────────────────────────────────────────────────────────────────────
 
 const supabase = createClient(
   Deno.env.get("SUPABASE_URL") ?? "",
   Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
 );
-
-const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -16,6 +40,8 @@ const corsHeaders = {
 
 interface AppointmentData {
   fullName: string;
+  phoneNumber?: string;
+  notes?: string;
   timeSlot: string;
   queueNumber: number;
   appointmentDate: string;
@@ -23,86 +49,33 @@ interface AppointmentData {
 }
 
 const handler = async (req: Request): Promise<Response> => {
-  console.log("Send admin notification function called");
-
-  // Handle CORS preflight requests
+  // Handle CORS preflight
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
     const { appointmentData }: { appointmentData: AppointmentData } = await req.json();
-    console.log("Processing admin notification for appointment:", appointmentData.bookingReference);
 
-    // Get admin users
-    const { data: adminUsers, error } = await supabase
-      .from('admin_users')
-      .select('email');
-
-    if (error) {
-      console.error("Error fetching admin users:", error);
-      throw error;
-    }
-
-    if (!adminUsers || adminUsers.length === 0) {
-      console.log("No admin users found");
-      return new Response(JSON.stringify({ success: true, message: "No admin users to notify" }), {
-        status: 200,
-        headers: { "Content-Type": "application/json", ...corsHeaders },
-      });
-    }
-
-    const adminEmails = adminUsers.map(admin => admin.email);
-    console.log("Sending notifications to admins:", adminEmails);
-
-    const emailResponse = await resend.emails.send({
-      from: "AppointmentBot Pro <notifications@resend.dev>",
-      to: adminEmails,
-      subject: `New Appointment Booking - ${appointmentData.timeSlot}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h1 style="color: #DC2626; text-align: center;">New Appointment Alert</h1>
-          
-          <div style="background-color: #FEF2F2; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #DC2626;">
-            <h2 style="color: #991B1B; margin-top: 0;">Appointment Details</h2>
-            <p><strong>Patient Name:</strong> ${appointmentData.fullName}</p>
-            <p><strong>Date:</strong> ${new Date(appointmentData.appointmentDate).toLocaleDateString()}</p>
-            <p><strong>Time Slot:</strong> ${appointmentData.timeSlot}</p>
-            <p><strong>Queue Number:</strong> #${appointmentData.queueNumber}</p>
-            <p><strong>Booking Reference:</strong> ${appointmentData.bookingReference}</p>
-            <p><strong>Booked At:</strong> ${new Date().toLocaleString()}</p>
-          </div>
-          
-          <div style="text-align: center; margin: 30px 0;">
-            <a href="/admin" style="background-color: #DC2626; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
-              View in Admin Dashboard
-            </a>
-          </div>
-          
-          <p style="text-align: center; color: #6B7280; font-size: 14px;">
-            This is an automated notification from AppointmentBot Pro
-          </p>
-        </div>
-      `,
+    // ── Placeholder: replace this block with your Telegram sendMessage call ──
+    console.log("New appointment received (Telegram notification pending setup):", {
+      ref: appointmentData.bookingReference,
+      name: appointmentData.fullName,
+      date: appointmentData.appointmentDate,
+      slot: appointmentData.timeSlot,
+      queue: appointmentData.queueNumber,
     });
+    // ─────────────────────────────────────────────────────────────────────────
 
-    console.log("Admin notification sent successfully:", emailResponse);
-
-    return new Response(JSON.stringify({ success: true, emailId: emailResponse.data?.id }), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-        ...corsHeaders,
-      },
-    });
+    return new Response(
+      JSON.stringify({ success: true, message: "Notification stub — Telegram not yet configured." }),
+      { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
+    );
   } catch (error: any) {
-    console.error("Error in send-admin-notification function:", error);
+    console.error("Error in send-admin-notification:", error);
     return new Response(
       JSON.stringify({ error: error.message }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json", ...corsHeaders },
-      }
+      { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
     );
   }
 };
